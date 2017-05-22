@@ -2,11 +2,14 @@ import React from "react";
 
 import Post from "./Post";
 
+import lobbyStorage from "../lobbystorage";
+
 import * as firebase from "firebase";
 
 export default class Messages extends React.Component {
   constructor() {
     super();
+    this.forceUpdate = this.forceUpdate.bind(this);
     this.state = {
       posts: [],
     };
@@ -14,8 +17,8 @@ export default class Messages extends React.Component {
 
   componentDidMount() {
     var that = this;
-    firebase.database().ref("posts").on("child_added", (data) => {
-      var container = document.getElementsByClassName("MessagesContainer")[0];
+    firebase.database().ref("posts" + localStorage.getItem("lobbyName")).on("child_added", (data) => {
+      var container = document.getElementById("messagescontainer");
       container.scrollTop = container.scrollHeight;
       var p = that.state.posts;
       console.log(data.val());
@@ -30,7 +33,7 @@ export default class Messages extends React.Component {
 
   render() {
     return (
-      <div className="MessagesContainer">
+      <div id="messagescontainer" className="MessagesContainer">
         {
           this.state.posts.map((p) => {
             return (<Post key={Math.floor(Math.random() * Math.PI * 10000000 / Math.random() * 10)} data={p} />);

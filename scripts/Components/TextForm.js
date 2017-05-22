@@ -4,9 +4,12 @@ import * as firebase from "firebase";
 
 import * as ClientJS from "clientjs";
 
+import lobbyStorage from "../lobbystorage";
+
 export default class TextForm extends React.Component {
   constructor() {
     super();
+    this.forceUpdate = this.forceUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +34,7 @@ export default class TextForm extends React.Component {
       content: input.value,
     };
 
-    firebase.database().ref("posts").push().set({
+    firebase.database().ref("posts" + localStorage.getItem("lobbyName")).push().set({
       username: post.username,
       content: post.content,
     });

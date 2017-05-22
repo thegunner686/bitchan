@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 
 import Layout from "./Components/Layout";
 
+import lobbyStorage from "./lobbystorage";
+
 import * as firebase from "firebase";
 
 var config = {
@@ -15,12 +17,13 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var user = "";
-do {
-  user = prompt("Enter a Username less than 30 characterss");
-} while(user.length > 30);
-
-localStorage.setItem("username", user);
+var user = localStorage.getItem("username");
+if(user == null) {
+  do {
+    user = prompt("Enter a Username less than 30 characters.");
+  } while(user == null || user.length > 30);
+  localStorage.setItem("username", user);
+}
 
 var app = document.getElementById("app");
 
